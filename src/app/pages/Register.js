@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+import { register } from '../../redux/actions';
 export class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+      email: '',
+    };
+  }
   render() {
     return (
       <div>
@@ -18,6 +28,11 @@ export class Register extends Component {
                       className="form-control form-control-lg"
                       id="exampleInputUsername1"
                       placeholder="Username"
+                      onChange={(e) => {
+                        this.setState({
+                          username: e.target.value,
+                        });
+                      }}
                     />
                   </div>
                   <div className="form-group">
@@ -26,6 +41,11 @@ export class Register extends Component {
                       className="form-control form-control-lg"
                       id="exampleInputEmail1"
                       placeholder="Email"
+                      onChange={(e) => {
+                        this.setState({
+                          email: e.target.value,
+                        });
+                      }}
                     />
                   </div>
                   <div className="form-group">
@@ -34,24 +54,35 @@ export class Register extends Component {
                       className="form-control form-control-lg"
                       id="exampleInputPassword1"
                       placeholder="Password"
+                      onChange={(e) => {
+                        this.setState({
+                          password: e.target.value,
+                        });
+                      }}
                     />
                   </div>
-                  <div className="mb-4">
-                    <div className="form-check">
-                      <label className="form-check-label text-muted">
-                        <input type="checkbox" className="form-check-input" />
-                        <i className="input-helper"></i>I agree to all Terms &
-                        Conditions
-                      </label>
-                    </div>
-                  </div>
                   <div className="mt-3">
-                    <Link
+                    {/* <Link
                       className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
                       to="/dashboard"
                     >
                       SIGN UP
-                    </Link>
+                    </Link> */}
+                    <a
+                      className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                      onClick={() => {
+                        console.log(this.state);
+                        this.props.dispatch(
+                          register({
+                            username: this.state.username,
+                            password: this.state.password,
+                            email: this.state.email,
+                          })
+                        );
+                      }}
+                    >
+                      SIGN UP
+                    </a>
                   </div>
                   <div className="text-center mt-4 font-weight-light">
                     Already have an account?{' '}
@@ -69,4 +100,8 @@ export class Register extends Component {
   }
 }
 
-export default Register;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps)(Register);

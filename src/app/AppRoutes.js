@@ -1,5 +1,6 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Spinner from '../app/shared/Spinner';
 
@@ -30,16 +31,53 @@ const Register1 = lazy(() => import('./user-pages/Register'));
 
 class AppRoutes extends Component {
   render() {
+    const PrivateRoute = ({ component: Component, ...rest }) => {
+      return (
+        <Route
+          {...rest}
+          render={(props) => {
+            if (!this.props.loggedIn) {
+              console.log(this.props.loggedIn);
+              return <Redirect to="/login" />;
+            } else {
+              return <Component {...props} />;
+            }
+          }}
+        />
+      );
+    };
+
+    const LoginRoute = ({ component: Component, ...rest }) => {
+      return (
+        <Route
+          {...rest}
+          render={(props) => {
+            console.log(this.props.loggedIn);
+            if (this.props.loggedIn) {
+              return <Redirect to="/home" />;
+            } else {
+              return <Component {...props} />;
+            }
+          }}
+        />
+      );
+    };
+
     return (
       <Suspense fallback={<Spinner />}>
         <Switch>
-          <Route exact path="/home" component={Home} />
-          <Route path="/admin" component={Admin} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/admin" component={Admin} />
+          {/* Public Routes */}
+          <LoginRoute path="/login" component={Login} />
+          <LoginRoute path="/register" component={Register} />
           <Route path="/404" component={Error404} />
           <Route path="/500" component={Error500} />
+          {/* ============== */}
+
+          {/* Private Routes */}
+          <PrivateRoute exact path="/home" component={Home} />
+          <PrivateRoute path="/admin" component={Admin} />
+          <PrivateRoute path="/admin" component={Admin} />
+          {/* ============== */}
 
           {/* Template Pages */}
           <Route exact path="/layout/dashboard" component={Dashboard1} />
@@ -64,4 +102,10 @@ class AppRoutes extends Component {
   }
 }
 
-export default AppRoutes;
+function mapStateToProps(state) {
+  return {
+    loggedIn: state.loggedIn,
+  };
+}
+
+export default connect(mapStateToProps)(AppRoutes);

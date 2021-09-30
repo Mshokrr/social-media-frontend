@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
+import { connect } from 'react-redux';
+
+import { login } from '../../redux/actions';
 
 export class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+      password: '',
+    };
+  }
   render() {
     return (
       <div>
@@ -18,6 +28,11 @@ export class Login extends Component {
                       placeholder="Username"
                       size="lg"
                       className="h-auto"
+                      onChange={(e) => {
+                        this.setState({
+                          username: e.target.value,
+                        });
+                      }}
                     />
                   </Form.Group>
                   <Form.Group className="d-flex search-field">
@@ -26,15 +41,36 @@ export class Login extends Component {
                       placeholder="Password"
                       size="lg"
                       className="h-auto"
+                      onChange={(e) => {
+                        this.setState({
+                          password: e.target.value,
+                        });
+                      }}
                     />
                   </Form.Group>
                   <div className="mt-3">
-                    <Link
+                    {/* <Link
                       className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-                      to="/dashboard"
+                      onClick={() => {
+                        console.log('clicked!!!');
+                      }}
                     >
                       SIGN IN
-                    </Link>
+                    </Link> */}
+                    <a
+                      className="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
+                      onClick={() => {
+                        console.log('clicked!!!');
+                        this.props.dispatch(
+                          login({
+                            username: this.state.username,
+                            password: this.state.password,
+                          })
+                        );
+                      }}
+                    >
+                      SIGN IN
+                    </a>
                   </div>
 
                   <div className="text-center mt-4 font-weight-light">
@@ -53,4 +89,8 @@ export class Login extends Component {
   }
 }
 
-export default Login;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps)(Login);
