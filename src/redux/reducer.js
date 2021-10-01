@@ -27,7 +27,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         token: null,
-        refreshToken: action.data.data.user.refreshToken,
+        refreshToken: null,
         loggedIn: false,
         user: null,
       };

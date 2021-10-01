@@ -4,6 +4,9 @@ export class Admin extends Component {
   render() {
     return (
       <div>
+        <div className="page-header">
+          <h1> Admin </h1>
+        </div>
         <div className="row">
           <div className="col-md-12 grid-margin stretch-card">
             <div className="card">

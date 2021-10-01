@@ -7,9 +7,8 @@ import reducer from './reducer';
 import storage from 'redux-persist/lib/storage';
 
 const persistConfig = {
-  key: 'reducer',
+  key: 'root',
   storage: storage,
-  whitelist: ['reducer'],
 };
 
 const presistedReducer = persistReducer(persistConfig, reducer);

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { Trans } from 'react-i18next';
+import { connect } from 'react-redux';
+
+import { logout } from '../../../redux/actions';
 
 class Navbar extends Component {
   toggleOffcanvas() {
@@ -38,9 +40,7 @@ class Navbar extends Component {
               </Dropdown.Toggle>
 
               <Dropdown.Menu className="navbar-dropdown preview-list create-new-dropdown-menu">
-                <h6 className="p-3 mb-0">
-                  <Trans>Projects</Trans>
-                </h6>
+                <h6 className="p-3 mb-0">Projects</h6>
                 <Dropdown.Divider />
                 <Dropdown.Item
                   href="!#"
@@ -54,7 +54,7 @@ class Navbar extends Component {
                   </div>
                   <div className="preview-item-content">
                     <p className="preview-subject ellipsis mb-1">
-                      <Trans>Software Development</Trans>
+                      Software Development
                     </p>
                   </div>
                 </Dropdown.Item>
@@ -71,7 +71,7 @@ class Navbar extends Component {
                   </div>
                   <div className="preview-item-content">
                     <p className="preview-subject ellipsis mb-1">
-                      <Trans>UI Development</Trans>
+                      UI Development
                     </p>
                   </div>
                 </Dropdown.Item>
@@ -88,14 +88,12 @@ class Navbar extends Component {
                   </div>
                   <div className="preview-item-content">
                     <p className="preview-subject ellipsis mb-1">
-                      <Trans>Software Testing</Trans>
+                      Software Testing
                     </p>
                   </div>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <p className="p-3 mb-0 text-center">
-                  <Trans>See all projects</Trans>
-                </p>
+                <p className="p-3 mb-0 text-center">See all projects</p>
               </Dropdown.Menu>
             </Dropdown>
 
@@ -129,9 +127,7 @@ class Navbar extends Component {
                     </div>
                   </div>
                   <div className="preview-item-content">
-                    <p className="preview-subject mb-1">
-                      <Trans>Edit Profile</Trans>
-                    </p>
+                    <p className="preview-subject mb-1">Edit Profile</p>
                   </div>
                 </Dropdown.Item>
                 <Dropdown.Divider />
@@ -145,10 +141,13 @@ class Navbar extends Component {
                       <i className="mdi mdi-logout text-danger"></i>
                     </div>
                   </div>
-                  <div className="preview-item-content">
-                    <p className="preview-subject mb-1">
-                      <Trans>Log Out</Trans>
-                    </p>
+                  <div
+                    className="preview-item-content"
+                    onClick={() => {
+                      this.props.dispatch(logout());
+                    }}
+                  >
+                    <p className="preview-subject mb-1">Log Out</p>
                   </div>
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -167,4 +166,8 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps)(Navbar);
