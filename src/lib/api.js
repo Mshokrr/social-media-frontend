@@ -23,8 +23,6 @@ const post = (url, body, options = {}) => {
   if (options.token) {
     headers['x-access-token'] = options.token;
   }
-
-  console.log('axios post');
   return axios
     .post(`${BACKEND_URL}${url}`, body, { headers })
     .then((response) => {

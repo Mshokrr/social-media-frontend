@@ -4,6 +4,7 @@ export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REGISTER = 'REGISTER';
 export const CREATE_POST = 'CREATE_POST';
+export const GET_POSTS = 'GET_POSTS';
 export const LIKE_POST = 'LIKE_POST';
 export const CREATE_COMMENT = 'CREATE_COMMENT';
 export const FETCH_POSTS = 'FETCH_POSTS';
@@ -18,7 +19,7 @@ export function login(user) {
     api
       .post('/auth/login', { user })
       .then((response) => {
-        dispatch({ type: LOGIN, data: response.data });
+        dispatch({ type: LOGIN, data: response.data.data });
       })
       .catch((err) => {
         console.log(err);
@@ -37,7 +38,20 @@ export function register(user) {
     api
       .post('/auth/register', { user })
       .then((response) => {
-        dispatch({ type: REGISTER, data: response.data });
+        dispatch({ type: REGISTER, data: response.data.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function getPosts(query) {
+  return (dispatch) => {
+    api
+      .post('/search', { models: ['posts'] })
+      .then((response) => {
+        dispatch({ type: GET_POSTS, data: response.data.data });
       })
       .catch((err) => {
         console.log(err);

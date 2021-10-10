@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Collapse, Dropdown } from 'react-bootstrap';
-import { Trans } from 'react-i18next';
+import { connect } from 'react-redux';
 
 class Sidebar extends Component {
   state = {};
+
+  constructor(props) {
+    super(props);
+  }
 
   toggleMenuState(menuState) {
     if (this.state[menuState]) {
@@ -18,6 +22,8 @@ class Sidebar extends Component {
       this.setState({ [menuState]: true });
     }
   }
+
+  componentDidMount() {}
 
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
@@ -65,8 +71,10 @@ class Sidebar extends Component {
                   <span className="count bg-success"></span>
                 </div>
                 <div className="profile-name">
-                  <h5 className="mb-0 font-weight-normal">Mohamed Shokr</h5>
-                  <span>@mshokrr</span>
+                  <h5 className="mb-0 font-weight-normal">
+                    {this.props.user.firstName} {this.props.user.lastName}
+                  </h5>
+                  <span>@{this.props.user.username}</span>
                 </div>
               </div>
               <Dropdown alignRight>
@@ -86,7 +94,7 @@ class Sidebar extends Component {
                     </div>
                     <div className="preview-item-content">
                       <p className="preview-subject ellipsis mb-1 text-small">
-                        <Trans>Account settings</Trans>
+                        Account settings
                       </p>
                     </div>
                   </a>
@@ -103,7 +111,7 @@ class Sidebar extends Component {
                     </div>
                     <div className="preview-item-content">
                       <p className="preview-subject ellipsis mb-1 text-small">
-                        <Trans>Change Password</Trans>
+                        Change Password
                       </p>
                     </div>
                   </a>
@@ -120,7 +128,7 @@ class Sidebar extends Component {
                     </div>
                     <div className="preview-item-content">
                       <p className="preview-subject ellipsis mb-1 text-small">
-                        <Trans>To-do list</Trans>
+                        To-do list
                       </p>
                     </div>
                   </a>
@@ -129,7 +137,7 @@ class Sidebar extends Component {
             </div>
           </li>
           <li className="nav-item nav-category">
-            <span className="nav-link">Navigation</span>
+            <span className="nav-link">Menu</span>
           </li>
           <li
             className={
@@ -213,20 +221,22 @@ class Sidebar extends Component {
               </div>
             </Collapse>
           </li>
-          <li
-            className={
-              this.isPathActive('/admin')
-                ? 'nav-item menu-items active'
-                : 'nav-item menu-items'
-            }
-          >
-            <Link className="nav-link" to="/admin">
-              <span className="menu-icon">
-                <i className="mdi mdi-security"></i>
-              </span>
-              <span className="menu-title">Admin</span>
-            </Link>
-          </li>
+          {this.props.isAdmin && (
+            <li
+              className={
+                this.isPathActive('/admin')
+                  ? 'nav-item menu-items active'
+                  : 'nav-item menu-items'
+              }
+            >
+              <Link className="nav-link" to="/admin">
+                <span className="menu-icon">
+                  <i className="mdi mdi-security"></i>
+                </span>
+                <span className="menu-title">Admin</span>
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     );
@@ -255,4 +265,11 @@ class Sidebar extends Component {
   }
 }
 
-export default withRouter(Sidebar);
+function mapStateToProps(state) {
+  return {
+    user: state.user || {},
+    isAdmin: state.user && state.user.isAdmin,
+  };
+}
+
+export default connect(mapStateToProps)(withRouter(Sidebar));

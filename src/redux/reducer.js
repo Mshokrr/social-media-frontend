@@ -18,10 +18,10 @@ export default function reducer(state = initialState, action = {}) {
     case actions.LOGIN:
       return {
         ...state,
-        token: action.data.data.token,
-        refreshToken: action.data.data.user.refreshToken,
+        token: action.data.token,
+        refreshToken: action.data.user.refreshToken,
         loggedIn: true,
-        user: action.data.data.user,
+        user: action.data.user,
       };
     case actions.LOGOUT:
       return {
@@ -34,10 +34,15 @@ export default function reducer(state = initialState, action = {}) {
     case actions.REGISTER:
       return {
         ...state,
-        token: action.data.data.token,
-        refreshToken: action.data.data.user.refreshToken,
+        token: action.data.token,
+        refreshToken: action.data.user.refreshToken,
         loggedIn: true,
-        user: action.data.data.user,
+        user: action.data.user,
+      };
+    case actions.GET_POSTS:
+      return {
+        ...state,
+        posts: action.data.posts,
       };
     case actions.CREATE_POST:
       return state;

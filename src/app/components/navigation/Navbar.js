@@ -109,7 +109,7 @@ class Navbar extends Component {
                     alt="profile"
                   />
                   <p className="mb-0 d-none d-sm-block navbar-profile-name">
-                    Mohamed Shokr
+                    {this.props.user.firstName} {this.props.user.lastName}
                   </p>
                   <i className="mdi mdi-menu-down d-none d-sm-block"></i>
                 </div>
@@ -167,7 +167,10 @@ class Navbar extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    user: state.user || {},
+    isAdmin: state.user && state.user.isAdmin,
+  };
 }
 
 export default connect(mapStateToProps)(Navbar);

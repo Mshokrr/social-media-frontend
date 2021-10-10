@@ -37,8 +37,22 @@ class AppRoutes extends Component {
           {...rest}
           render={(props) => {
             if (!this.props.loggedIn) {
-              console.log(this.props.loggedIn);
               return <Redirect to="/login" />;
+            } else {
+              return <Component {...props} />;
+            }
+          }}
+        />
+      );
+    };
+
+    const AdminRoute = ({ component: Component, ...rest }) => {
+      return (
+        <Route
+          {...rest}
+          render={(props) => {
+            if (!this.props.isAdmin) {
+              return <Redirect to="/404" />;
             } else {
               return <Component {...props} />;
             }
@@ -52,7 +66,6 @@ class AppRoutes extends Component {
         <Route
           {...rest}
           render={(props) => {
-            console.log(this.props.loggedIn);
             if (this.props.loggedIn) {
               return <Redirect to="/home" />;
             } else {
@@ -75,7 +88,7 @@ class AppRoutes extends Component {
 
           {/* Private Routes */}
           <PrivateRoute exact path="/home" component={Home} />
-          <PrivateRoute path="/admin" component={Admin} />
+          <AdminRoute path="/admin" component={Admin} />
           <PrivateRoute path="/admin" component={Admin} />
           {/* ============== */}
 
@@ -104,6 +117,7 @@ class AppRoutes extends Component {
 
 function mapStateToProps(state) {
   return {
+    isAdmin: state.loggedIn && state.user && state.user.isAdmin,
     loggedIn: state.loggedIn,
   };
 }
